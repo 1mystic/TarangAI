@@ -6,6 +6,7 @@
 A live voice translator for Android covering India's 8 most-spoken languages and English. It's free, private and works offline.</p>
 
 <p align="center">
+  <a href="https://1mystic8u.github.io/TarangAI/"><b>🌐 Website</b></a> ·
   <a href="../../releases"><b>⬇ Download the APK</b></a> ·
   <a href="docs/USER_GUIDE.md">User guide</a> ·
   <a href="docs/BRAND.md">Brand guide</a> ·
@@ -102,3 +103,10 @@ docs/            Brand guide, architecture, user guide, SVG brand assets
 Built on Jetpack Compose, Google ML Kit, Android speech services and the MyMemory translation API. Inspired by
 the *Saathi* example in the [Bodhan AI Cookbook](https://github.com/rudra431/Bodhan-AI-Cookbook/tree/main/examples/AndroidSpeak),
 re-engineered to run on free, on-device models.
+
+## Website
+
+`site/` is a single-file static landing page in the same brand system (inline SVG, no build step). The **Website**
+workflow deploys it to GitHub Pages from the default branch. If the first deploy reports that Pages is disabled,
+enable it once under **Settings → Pages → Source: GitHub Actions** and re-run the workflow. The download buttons link
+to `/releases/latest/download/Tarang-<abi>.apk`, which every default-branch build keeps up to date.
