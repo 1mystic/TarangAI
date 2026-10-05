@@ -6,7 +6,7 @@
 A live voice translator for Android covering India's 8 most-spoken languages and English. It's free, private and works offline.</p>
 
 <p align="center">
-  <a href="https://1mystic8u.github.io/TarangAI/"><b>🌐 Website</b></a> ·
+  <a href="https://1mystic.github.io/TarangAI/"><b>🌐 Website</b></a> ·
   <a href="../../releases"><b>⬇ Download the APK</b></a> ·
   <a href="docs/USER_GUIDE.md">User guide</a> ·
   <a href="docs/BRAND.md">Brand guide</a> ·
@@ -107,7 +107,7 @@ re-engineered to run on free, on-device models.
 ## Website
 
 `site/` is a single-file static landing page in the same brand system (inline SVG, no build step), live at
-**https://1mystic8u.github.io/TarangAI/**. The **Website** workflow publishes it to the `gh-pages` branch on every
+**https://1mystic.github.io/TarangAI/**. The **Website** workflow publishes it to the `gh-pages` branch on every
 change to `site/` on the default branch.
 
 One-time setup: **Settings → Pages → Build and deployment → Source: "Deploy from a branch" → Branch: `gh-pages` /
