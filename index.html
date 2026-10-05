@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarang · Live voice translator for India</title>
+<meta name="description" content="Tarang is a free, private, offline-first Android app for live voice translation across Hindi, Bengali, Marathi, Telugu, Tamil, Gujarati, Urdu, Kannada and English.">
+<meta name="theme-color" content="#2B2580">
+<meta property="og:title" content="Tarang · Every voice, one wave.">
+<meta property="og:description" content="Talk to anyone in India, in their language. Free, private, works offline.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo: #4F46E5; --indigo-deep: #2B2580; --violet: #7C3AED;
+    --saffron: #FF7A1A; --teal: #0EA5A4;
+    --bg: #F7F7FC; --surface: #FFFFFF; --surface-2: #F0F0F8; --text: #14162B; --muted: #5A5C73; --line: #E1E1EC;
+    --primary: var(--indigo); --hero: linear-gradient(135deg, #2B2580 0%, #4F46E5 55%, #7C3AED 100%);
+    --radius: 24px; --shadow: 0 10px 40px -12px rgba(43,37,128,.25);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B0D1A; --surface: #12152A; --surface-2: #1D2139; --text: #E6E6F2; --muted: #A9ABC4; --line: #2A2E48;
+      --primary: #A5A1FF; --shadow: 0 10px 40px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B0D1A; --surface: #12152A; --surface-2: #1D2139; --text: #E6E6F2; --muted: #A9ABC4; --line: #2A2E48;
+    --primary: #A5A1FF; --shadow: 0 10px 40px -12px rgba(0,0,0,.6);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Inter, Roboto, "Noto Sans", "Noto Sans Devanagari", system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+  .lead { color: var(--muted); font-size: 18px; max-width: 620px; }
+  section { padding: 88px 0; }
+
+  /* Nav */
+  nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 78%, transparent); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  .brand svg { width: 32px; height: 32px; }
+  nav .links { margin-left: auto; display: flex; align-items: center; gap: 22px; font-size: 15px; font-weight: 500; color: var(--muted); }
+  nav .links a:hover { color: var(--text); }
+  @media (max-width: 720px) { nav .links .hide-sm { display: none; } }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 24px; border-radius: 999px; font-weight: 600; font-size: 16px; transition: transform .15s ease, box-shadow .15s ease, background .15s; white-space: nowrap; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn-white { background: #fff; color: var(--indigo-deep); box-shadow: 0 8px 24px -8px rgba(0,0,0,.35); }
+  .btn-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.28); }
+  .btn-ghost:hover { background: rgba(255,255,255,.2); }
+  .btn-primary { background: var(--indigo); color: #fff; box-shadow: 0 8px 24px -10px var(--indigo); }
+  .btn-outline { border: 1px solid var(--line); background: var(--surface); }
+  .btn-sm { height: 40px; padding: 0 16px; font-size: 14px; }
+
+  /* Hero */
+  .hero { position: relative; background: var(--hero); color: #fff; padding: 72px 0 0; overflow: hidden; }
+  .hero canvas { position: absolute; inset: auto 0 0 0; width: 100%; height: 260px; opacity: .9; pointer-events: none; }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 { font-size: clamp(40px, 6.4vw, 68px); font-weight: 800; letter-spacing: -0.035em; }
+  .hero h1 .hi { display: block; font-size: .42em; font-weight: 600; letter-spacing: 0; opacity: .75; margin-bottom: 14px; }
+  .hero p.sub { font-size: 19px; color: rgba(255,255,255,.85); margin: 22px 0 32px; max-width: 540px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .meta { margin-top: 18px; font-size: 14px; color: rgba(255,255,255,.7); }
+  .meta a { text-decoration: underline; text-underline-offset: 3px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .badge { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); }
+
+  /* Phone mockup */
+  .phone-col { display: flex; justify-content: center; padding-bottom: 0; }
+  .phone { width: 300px; height: 600px; border-radius: 44px; background: #0B0D1A; padding: 12px; box-shadow: 0 40px 80px -20px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.08); transform: translateY(40px); }
+  .screen { width: 100%; height: 100%; border-radius: 34px; background: #F7F7FC; color: #14162B; overflow: hidden; display: flex; flex-direction: column; font-size: 13px; }
+  .half { flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .half.top { transform: rotate(180deg); background: #fff; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13px; }
+  .av { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: #E4E2FF; color: #1A1567; }
+  .bubble { max-width: 82%; padding: 8px 12px; border-radius: 16px; line-height: 1.4; }
+  .in { background: #EAEAF4; border-bottom-left-radius: 5px; align-self: flex-start; font-size: 15px; }
+  .in small { display: block; color: #5A5C73; font-size: 11px; margin-top: 2px; }
+  .out { align-self: flex-end; border-bottom-right-radius: 5px; }
+  .out.me { background: rgba(79,70,229,.14); }
+  .out.them { background: rgba(14,165,164,.16); }
+  .mic { margin: auto auto 0; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: #fff; position: relative; }
+  .mic svg { width: 22px; height: 22px; }
+  .mic.me { background: var(--indigo); }
+  .mic.live { background: var(--saffron); }
+  .mic.live::before, .mic.live::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; background: rgba(255,122,26,.22); animation: pulse 1.4s ease-in-out infinite; z-index: -1; }
+  .mic.live::after { inset: -16px; background: rgba(255,122,26,.12); animation-delay: .3s; }
+  @keyframes pulse { 0%,100% { transform: scale(.92); } 50% { transform: scale(1.08); } }
+  .divider { height: 1px; background: #E1E1EC; position: relative; }
+  .typing { font-style: italic; color: #5A5C73; }
+
+  /* Languages marquee */
+  .langs { padding: 28px 0; border-bottom: 1px solid var(--line); background: var(--surface); overflow: hidden; }
+  .marquee { display: flex; gap: 40px; width: max-content; animation: scroll 40s linear infinite; }
+  .marquee span { font-size: 26px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .marquee span b { color: var(--text); font-weight: 700; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee, .mic.live::before, .mic.live::after { animation: none; } }
+
+  /* Modes */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 40px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: transform .2s, box-shadow .2s; }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .card .ic { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 16px; }
+  .card .ic svg { width: 24px; height: 24px; }
+  .card h3 { font-size: 19px; margin-bottom: 6px; }
+  .card p { color: var(--muted); font-size: 15px; }
+  .card.feature { grid-column: span 2; background: var(--hero); color: #fff; border: 0; }
+  .card.feature p { color: rgba(255,255,255,.82); }
+  @media (max-width: 560px) { .card.feature { grid-column: auto; } }
+
+  /* Engine table */
+  .split { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: start; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+  .table { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 1.1fr 1.4fr .9fr; gap: 12px; padding: 16px 20px; border-top: 1px solid var(--line); font-size: 15px; align-items: center; }
+  .row:first-child { border-top: 0; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+  .row .eng { color: var(--muted); }
+  .ok { color: var(--teal); font-weight: 600; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+  .stat b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); }
+  .stat span { font-size: 13px; color: var(--muted); }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 40px; counter-reset: s; }
+  .step { position: relative; padding: 24px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .step::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--indigo); color: #fff; font-weight: 700; margin-bottom: 14px; }
+  .step h3 { font-size: 18px; margin-bottom: 4px; }
+  .step p { color: var(--muted); font-size: 15px; }
+
+  /* Download band */
+  .download { background: var(--hero); color: #fff; border-radius: 36px; padding: 56px 40px; position: relative; overflow: hidden; text-align: center; }
+  .download h2 { margin-bottom: 12px; }
+  .download p { color: rgba(255,255,255,.85); max-width: 560px; margin: 0 auto 28px; }
+  .download .cta { justify-content: center; }
+  .download small { display: block; margin-top: 18px; color: rgba(255,255,255,.7); font-size: 13px; }
+  .download small a { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* FAQ */
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 22px; margin-top: 10px; }
+  summary { font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  summary::after { content: "+"; color: var(--primary); font-size: 20px; line-height: 1; }
+  details[open] summary::after { content: "–"; }
+  details p { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+  footer .links { display: flex; gap: 20px; }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2B2580"/><stop offset=".55" stop-color="#4F46E5"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+    <symbol id="logo" viewBox="0 0 108 108">
+      <rect width="108" height="108" rx="32" fill="url(#tg)"/>
+      <path d="M30,54 C35,70 41,70 46,54 S57,38 62,54 S73,70 78,54" fill="none" stroke="#FF7A1A" stroke-width="6" stroke-linecap="round"/>
+      <path d="M30,54 C35,38 41,38 46,54 S57,70 62,54 S73,38 78,54" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.27 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z"/></symbol>
+    <symbol id="i-cc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10.5 10a2 2 0 1 0 0 4M17 10a2 2 0 1 0 0 4"/></symbol>
+    <symbol id="i-kbd" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M8 9h8M8 12h8M8 15h5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5Zm0 0V19"/></symbol>
+    <symbol id="i-voice" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5M17 5.5a4 4 0 0 1 0 5M19.5 3a7.5 7.5 0 0 1 0 10"/></symbol>
+  </defs>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><svg><use href="#logo"/></svg>Tarang</a>
+    <div class="links">
+      <a class="hide-sm" href="#modes">Modes</a>
+      <a class="hide-sm" href="#offline">Offline</a>
+      <a class="hide-sm" href="#faq">FAQ</a>
+      <a href="https://github.com/1mystic8u/TarangAI" aria-label="GitHub repository" target="_blank" rel="noopener noreferrer"><svg width="22" height="22"><use href="#i-github"/></svg></a>
+      <a class="btn btn-primary btn-sm js-apk" href="https://github.com/1mystic8u/TarangAI/releases/latest/download/Tarang-arm64-v8a.apk" target="_blank" rel="noopener noreferrer"><svg><use href="#i-download"/></svg>Get the app</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="wave" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <h1><span class="hi">तरंग · Every voice, one wave.</span>Talk to anyone in India, in their language.</h1>
+      <p class="sub">Tarang listens, translates and speaks back live across 8 Indian languages and English. It's free, private and works without internet.</p>
+      <div class="cta">
+        <a class="btn btn-white js-apk" href="https://github.com/1mystic8u/TarangAI/releases/latest/download/Tarang-arm64-v8a.apk" target="_blank" rel="noopener noreferrer"><svg><use href="#i-download"/></svg>Download APK</a>
+        <a class="btn btn-ghost" href="https://github.com/1mystic8u/TarangAI" target="_blank" rel="noopener noreferrer"><svg><use href="#i-github"/></svg>View on GitHub</a>
+      </div>
+      <p class="meta">Android 8.0+ · Free &amp; open source · <a href="https://github.com/1mystic8u/TarangAI/releases/latest/download/Tarang-universal.apk" target="_blank" rel="noopener noreferrer">Universal APK</a> · <a href="https://github.com/1mystic8u/TarangAI/releases" target="_blank" rel="noopener noreferrer">All releases</a></p>
+      <div class="badges">
+        <span class="badge">No account</span><span class="badge">No ads</span><span class="badge">Offline-first</span><span class="badge">~30 MB per language pack</span>
+      </div>
+    </div>
+    <div class="phone-col" aria-hidden="true">
+      <div class="phone"><div class="screen">
+        <div class="half top">
+          <span class="chip"><span class="av">த</span>தமிழ்</span>
+          <div class="bubble in">ரயில் நிலையம் எங்கே இருக்கிறது?<small>Where is the railway station?</small></div>
+          <div class="bubble out them">நேராகச் சென்று இடது பக்கம் திரும்புங்கள்.</div>
+          <div class="mic" style="background:#0EA5A4"><svg><use href="#i-mic"/></svg></div>
+        </div>
+        <div class="divider"></div>
+        <div class="half">
+          <span class="chip"><span class="av">A</span>English</span>
+          <div class="bubble out me">Where is the railway station?</div>
+          <div class="bubble in">Go straight and turn left.<small>நேராகச் சென்று இடது பக்கம் திரும்புங்கள்.</small></div>
+          <div class="bubble out me typing">Thank you so much…</div>
+          <div class="mic live"><svg><use href="#i-mic"/></svg></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</header>
+
+<div class="langs" aria-label="Supported languages">
+  <div class="marquee">
+    <span><b>हिन्दी</b> Hindi</span><span><b>বাংলা</b> Bengali</span><span><b>मराठी</b> Marathi</span><span><b>తెలుగు</b> Telugu</span><span><b>தமிழ்</b> Tamil</span><span><b>ગુજરાતી</b> Gujarati</span><span><b>اردو</b> Urdu</span><span><b>ಕನ್ನಡ</b> Kannada</span><span><b>English</b></span>
+    <span aria-hidden="true"><b>हिन्दी</b> Hindi</span><span aria-hidden="true"><b>বাংলা</b> Bengali</span><span aria-hidden="true"><b>मराठी</b> Marathi</span><span aria-hidden="true"><b>తెలుగు</b> Telugu</span><span aria-hidden="true"><b>தமிழ்</b> Tamil</span><span aria-hidden="true"><b>ગુજરાતી</b> Gujarati</span><span aria-hidden="true"><b>اردو</b> Urdu</span><span aria-hidden="true"><b>ಕನ್ನಡ</b> Kannada</span><span aria-hidden="true"><b>English</b></span>
+  </div>
+</div>
+
+<section id="modes">
+  <div class="wrap">
+    <p class="eyebrow">Five ways to be understood</p>
+    <h2>One app for every moment.</h2>
+    <p class="lead" style="margin-top:12px">Whether it's an auto ride, a pharmacy counter, a railway announcement or a restaurant menu, Tarang has a mode for it.</p>
+    <div class="grid">
+      <div class="card feature">
+        <div class="ic" style="background:rgba(255,255,255,.16)"><svg style="color:#fff"><use href="#i-voice"/></svg></div>
+        <h3>Conversation</h3>
+        <p>A split screen with one half each. Speak and Tarang says the translation out loud. Face-to-face mode flips the other half so they can read it from across the table, with prompts in their own script.</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:rgba(124,58,237,.14);color:#7C3AED"><svg><use href="#i-cc"/></svg></div>
+        <h3>Live captions</h3>
+        <p>Rolling subtitles for announcements, lectures and guides. They update while people are still talking.</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:rgba(79,70,229,.14);color:#4F46E5"><svg><use href="#i-kbd"/></svg></div>
+        <h3>Type</h3>
+        <p>Type, paste or dictate, and the translation appears as you go. Show it full screen to anyone.</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:rgba(14,165,164,.14);color:#0EA5A4"><svg><use href="#i-scan"/></svg></div>
+        <h3>Scan</h3>
+        <p>Point at a sign, menu or notice. The text is read on your phone, then translated.</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:rgba(255,122,26,.14);color:#E5640A"><svg><use href="#i-book"/></svg></div>
+        <h3>Phrasebook</h3>
+        <p>48 travel essentials for greetings, food, shopping, health and emergencies. Tap a phrase to speak it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="offline" style="background:var(--surface-2)">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Free · Private · Offline</p>
+      <h2>Built on free, on-device AI.</h2>
+      <p class="lead" style="margin-top:12px">No API keys, no subscriptions, no servers. Download a language once and translation runs entirely on your phone, even in airplane mode.</p>
+      <div class="stats">
+        <div class="stat"><b>72</b><span>language directions</span></div>
+        <div class="stat"><b>₹0</b><span>forever, no ads</span></div>
+        <div class="stat"><b>0</b><span>accounts or trackers</span></div>
+      </div>
+    </div>
+    <div class="table" role="table">
+      <div class="row" role="row"><span>Task</span><span>Engine</span><span>Offline</span></div>
+      <div class="row" role="row"><span>Translation</span><span class="eng">Google ML Kit, on-device</span><span class="ok">Yes</span></div>
+      <div class="row" role="row"><span>Speech → text</span><span class="eng">Android speech services</span><span class="ok">With offline pack</span></div>
+      <div class="row" role="row"><span>Text → speech</span><span class="eng">Android text-to-speech</span><span class="ok">Yes</span></div>
+      <div class="row" role="row"><span>Photo text</span><span class="eng">ML Kit text recognition</span><span class="ok">Yes</span></div>
+      <div class="row" role="row"><span>Fallback</span><span class="eng">MyMemory free API</span><span>Online</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Up and running in a minute</p>
+    <h2>How to install</h2>
+    <div class="steps">
+      <div class="step"><h3>Download the APK</h3><p>Tap <b>Download APK</b>. Most phones need the arm64 build. If you're not sure, get the universal APK.</p></div>
+      <div class="step"><h3>Allow the install</h3><p>Open the file. If Android asks, allow "Install unknown apps" for your browser.</p></div>
+      <div class="step"><h3>Pick your languages</h3><p>Choose the language you speak and the language of the person you're talking with, then grab the offline packs.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:0">
+  <div class="wrap" style="max-width:820px">
+    <h2 style="text-align:center;margin-bottom:24px">Questions</h2>
+    <details><summary>Is Tarang really free?</summary><p>Yes. It runs on free models from Google ML Kit and Android's built-in speech services. There are no ads, accounts or in-app purchases, and the source code is on GitHub.</p></details>
+    <details><summary>Does it work without internet?</summary><p>Translation, text-to-speech and photo scanning work fully offline once you download the language pack (~30 MB each). For offline voice input, add your languages under Android's voice typing settings. Tarang links you there.</p></details>
+    <details><summary>Which languages are supported?</summary><p>Hindi, Bengali, Marathi, Telugu, Tamil, Gujarati, Urdu and Kannada are the eight most spoken languages in India. English is included too. Any of them can be translated into any other.</p></details>
+    <details><summary>Is my voice or text sent anywhere?</summary><p>On-device translation and scanning never leave your phone. Only if you use the optional online engine is the text being translated sent to MyMemory. Choose Offline mode to prevent that. See the <a href="https://github.com/1mystic8u/TarangAI/blob/HEAD/PRIVACY.md" style="color:var(--primary)" target="_blank" rel="noopener noreferrer">privacy notes</a>.</p></details>
+    <details><summary>Why isn't it on the Play Store?</summary><p>Not yet! For now, install the APK directly from GitHub Releases. Each release is built automatically from the public source code.</p></details>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="download">
+      <h2>Start speaking every language.</h2>
+      <p>Get Tarang for Android. It's free and private, and it keeps working when the signal doesn't.</p>
+      <div class="cta">
+        <a class="btn btn-white js-apk" href="https://github.com/1mystic8u/TarangAI/releases/latest/download/Tarang-arm64-v8a.apk" target="_blank" rel="noopener noreferrer"><svg><use href="#i-download"/></svg>Download APK (arm64)</a>
+        <a class="btn btn-ghost" href="https://github.com/1mystic8u/TarangAI/releases/latest/download/Tarang-universal.apk" target="_blank" rel="noopener noreferrer"><svg><use href="#i-download"/></svg>Universal APK</a>
+        <a class="btn btn-ghost" href="https://github.com/1mystic8u/TarangAI" target="_blank" rel="noopener noreferrer"><svg><use href="#i-github"/></svg>Source code</a>
+      </div>
+      <small>Older 32-bit phone? Get <a href="https://github.com/1mystic8u/TarangAI/releases/latest/download/Tarang-armeabi-v7a.apk" target="_blank" rel="noopener noreferrer">armeabi-v7a</a>. Every build is on the <a href="https://github.com/1mystic8u/TarangAI/releases" target="_blank" rel="noopener noreferrer">Releases page</a>.</small>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#" style="font-size:16px"><svg style="width:26px;height:26px"><use href="#logo"/></svg>Tarang</a>
+    <div class="links">
+      <a href="https://github.com/1mystic8u/TarangAI" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/1mystic8u/TarangAI/blob/HEAD/docs/USER_GUIDE.md" target="_blank" rel="noopener noreferrer">Guide</a>
+      <a href="https://github.com/1mystic8u/TarangAI/blob/HEAD/PRIVACY.md" target="_blank" rel="noopener noreferrer">Privacy</a>
+      <a href="https://github.com/1mystic8u/TarangAI/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+    </div>
+    <span>Every voice, one wave.</span>
+  </div>
+</footer>
+
+<script>
+  // Brand wave: three tapered sine lines drifting across the hero.
+  (function () {
+    const c = document.getElementById('wave');
+    const ctx = c.getContext('2d');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lines = [
+      { color: 'rgba(255,255,255,0.35)', w: 2, cycles: 1.4, speed: 1 },
+      { color: 'rgba(255,122,26,0.65)', w: 2.5, cycles: 1.75, speed: 1.35 },
+      { color: 'rgba(255,255,255,0.18)', w: 1.5, cycles: 2.1, speed: 1.7 },
+    ];
+    function size() {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      c.width = c.clientWidth * dpr; c.height = c.clientHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function draw(t) {
+      const w = c.clientWidth, h = c.clientHeight, mid = h * 0.55;
+      ctx.clearRect(0, 0, w, h);
+      lines.forEach((l, i) => {
+        const amp = h * 0.28 * (1 - i * 0.2) * (0.75 + 0.25 * Math.sin(t / 1800 + i));
+        ctx.beginPath();
+        for (let s = 0; s <= 120; s++) {
+          const x = s / 120, env = Math.sin(Math.PI * x);
+          const y = mid + amp * env * Math.sin(2 * Math.PI * l.cycles * x + (t / 900) * l.speed + i);
+          s ? ctx.lineTo(x * w, y) : ctx.moveTo(0, y);
+        }
+        ctx.strokeStyle = l.color; ctx.lineWidth = l.w; ctx.lineCap = 'round'; ctx.stroke();
+      });
+      if (!reduce) requestAnimationFrame(draw);
+    }
+    addEventListener('resize', size); size(); requestAnimationFrame(draw);
+  })();
+</script>
+</body>
+</html>
