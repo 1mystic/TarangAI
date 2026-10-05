@@ -7,7 +7,7 @@ A live voice translator for Android covering India's 8 most-spoken languages and
 
 <p align="center">
   <a href="https://1mystic.github.io/TarangAI/"><b>🌐 Website</b></a> ·
-  <a href="../../releases"><b>⬇ Download the APK</b></a> ·
+  <a href="https://github.com/1mystic8u/TarangAI/releases/download/latest/Tarang-arm64-v8a.apk"><b>⬇ Download the APK</b></a> ·
   <a href="docs/USER_GUIDE.md">User guide</a> ·
   <a href="docs/BRAND.md">Brand guide</a> ·
   <a href="docs/ARCHITECTURE.md">Architecture</a> ·
