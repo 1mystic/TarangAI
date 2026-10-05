@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tarang brand palette — see docs/BRAND.md -->
+    <color name="tarang_indigo">#4F46E5</color>
+    <color name="tarang_indigo_deep">#2B2580</color>
+    <color name="tarang_violet">#7C3AED</color>
+    <color name="tarang_saffron">#FF7A1A</color>
+    <color name="tarang_teal">#0EA5A4</color>
+    <color name="tarang_ink">#0B0D1A</color>
+    <color name="tarang_mist">#F7F7FC</color>
+    <color name="window_bg">#F7F7FC</color>
+</resources>
