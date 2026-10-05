@@ -106,7 +106,10 @@ re-engineered to run on free, on-device models.
 
 ## Website
 
-`site/` is a single-file static landing page in the same brand system (inline SVG, no build step). The **Website**
-workflow deploys it to GitHub Pages from the default branch. If the first deploy reports that Pages is disabled,
-enable it once under **Settings → Pages → Source: GitHub Actions** and re-run the workflow. The download buttons link
-to `/releases/latest/download/Tarang-<abi>.apk`, which every default-branch build keeps up to date.
+`site/` is a single-file static landing page in the same brand system (inline SVG, no build step), live at
+**https://1mystic8u.github.io/TarangAI/**. The **Website** workflow publishes it to the `gh-pages` branch on every
+change to `site/` on the default branch.
+
+One-time setup: **Settings → Pages → Build and deployment → Source: "Deploy from a branch" → Branch: `gh-pages` /
+`(root)` → Save.** The download buttons link to `/releases/latest/download/Tarang-<abi>.apk`, which every
+default-branch build keeps up to date.
